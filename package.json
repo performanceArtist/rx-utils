@@ -23,6 +23,7 @@
   "license": "ISC",
   "dependencies": {
     "fp-ts": "^2.8.2",
+    "io-ts": "^2.2.10",
     "rxjs": "^6.6.3"
   },
   "devDependencies": {
