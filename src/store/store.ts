@@ -1,10 +1,10 @@
 import { Observable } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { option, tuple, array } from 'fp-ts';
 import { Option } from 'fp-ts/lib/Option';
 import { pipe } from 'fp-ts/lib/pipeable';
 import { flow, constVoid } from 'fp-ts/lib/function';
-import { behavior } from './behavior';
+import { behavior } from '../behavior';
 
 export type Entry<K, V> = [K, V];
 
@@ -13,7 +13,7 @@ export type Handlers<T, K, V> = {
   get: (key: K, store: T) => Option<V>;
   set: (key: K, value: V, store: T) => T;
   remove: (key: K, store: T) => Option<T>;
-  entries: (store: T) => [K, V][];
+  entries: (store: T) => Entry<K, V>[];
   fromEntries: (entries: Entry<K, V>[]) => T;
 };
 
@@ -72,11 +72,7 @@ export const makeStore = <T, K, V>(
 
   const has = flow(get, option.isSome);
 
-  const all$ = pipe(
-    store.value$,
-    map(handlers.entries),
-    shareReplay({ bufferSize: 1, refCount: true }),
-  );
+  const all$ = pipe(store.value$, map(handlers.entries));
   const keys$ = pipe(all$, map(array.map(tuple.fst)));
   const values$ = pipe(all$, map(array.map(tuple.snd)));
 
