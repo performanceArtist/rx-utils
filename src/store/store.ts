@@ -34,7 +34,7 @@ export type Store<K, V> = {
 export const makeStore = <T, K, V>(
   handlers: Handlers<T, K, V>,
 ): Store<K, V> => {
-  const store = behavior.create(handlers.empty);
+  const store = behavior.of(handlers.empty);
 
   const get = (key: K) => handlers.get(key, store.get());
 
