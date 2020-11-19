@@ -21,7 +21,7 @@
     "url": "git+https://github.com/performanceArtist/store.git"
   },
   "license": "ISC",
-  "dependencies": {
+  "peerDependencies": {
     "fp-ts": "^2.8.2",
     "io-ts": "^2.2.10",
     "rxjs": "^6.6.3"
