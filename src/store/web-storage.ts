@@ -4,13 +4,12 @@ import { pipe } from 'fp-ts/lib/pipeable';
 import { flow } from 'fp-ts/lib/function';
 import * as t from 'io-ts';
 import { failure } from 'io-ts/lib/PathReporter';
-import { makeMapStore } from './map-store';
+import { Store } from './store';
 
-export const makeWebStorage = (storage: Storage) => <K, V>(
+export const makeWebStorage = <K, V>(storage: Storage, store: Store<K, V>) => (
   key: t.Type<K>,
   value: t.Type<V>,
 ) => (branch: string) => {
-  const store = makeMapStore<K, V>();
   const codec = t.array(t.tuple([key, value]));
 
   const initial = pipe(
