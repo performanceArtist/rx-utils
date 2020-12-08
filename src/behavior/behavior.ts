@@ -39,7 +39,7 @@ declare module 'fp-ts/lib/HKT' {
   }
 }
 
-const instanceBehavior: Monad1<'Behavior'> = {
+export const instanceBehavior: Monad1<'Behavior'> = {
   URI,
   of: <A>(initial: A) => {
     const subject = new BehaviorSubject<A>(initial);
