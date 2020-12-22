@@ -1,10 +1,7 @@
-# Utils and wrappers for rxjs
+import { pipe } from 'fp-ts/lib/pipeable';
+import { of } from 'rxjs';
+import { behavior } from '../src';
 
-## Behavior
-
-Wrapper over `BehaviorSubject` with a monad instance:
-
-```ts
 const counter = behavior.of(0);
 const value = counter.get();
 const value$ = counter.value$;
@@ -33,20 +30,3 @@ const request = (id: number) =>
     type: 'pending',
   });
 const requestByCounter = pipe(counter, behavior.chain(request));
-```
-
-## Store
-
-Reactive key-value cache. The main use case is storage of http request results in observables by keys, but it could be used for any other caching with different data structures.
-
-Basic use case with Map as an underlying data structure:
-
-```ts
-type Message = { id: number; text: string };
-type Data = { type: 'pending' } | { type: 'success'; data: Message };
-const store = makeMapStore<number, Observable<Data>>();
-const mockApi = () => EMPTY;
-const getMessagesByChat = (chatID: number) =>
-  store.getOrElse(chatID, () => mockApi()); // creates a new observable or returns an old one
-const messages$ = getMessagesByChat(0);
-```
